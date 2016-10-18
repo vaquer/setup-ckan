@@ -19,21 +19,21 @@ Para usar setup-ckan en su ambiente es necesario seguir los siguientes pasos.
 1. Se clona el repositorio github.
 
 ```sh
-  git clone git@github.com:opintel/setup-ckan.git
+$ git clone git@github.com:opintel/setup-ckan.git
 ```
 2. Se construyen las imagenes Docker
 ```sh
-  docker build -t ckan/postgres setup-ckan/ckan-postgres
-  docker build -t ckan/ckan-solr setup-ckan/ckan-solr
-  docker build -t ckan/ckan-base setup-ckan/ckan-base
-  docker build -t ckan/ckan-plugins setup-ckan/ckan-plugins
+$ docker build -t ckan/postgres setup-ckan/ckan-postgres
+$ docker build -t ckan/ckan-solr setup-ckan/ckan-solr
+$ docker build -t ckan/ckan-base setup-ckan/ckan-base
+$ docker build -t ckan/ckan-plugins setup-ckan/ckan-plugins
 ```
 ### Uso
 Finalmente para levantar el ecosistema de CKAN es necesario correr los siguientes comandos.
 
 ```sh
 # Postgres
-docker run --name postgres-ckan \         
+$ docker run --name postgres-ckan \         
   -e POSTGRES_DB=ckan_default \                               
   -e USER_DATASTORE=ckan \                                                                 
   -e DATABASE_DATASTORE=datastore_default \
@@ -42,12 +42,12 @@ docker run --name postgres-ckan \
   -d -P ckan/postgres
 
 # Solr
-docker run \
+$ docker run \
   --name ckan-solr \
   -d -p 8983:8983 ckan/ckan-solr
 
 # CKAN
-docker run \
+$ docker run \
   --name ckan \
   -e INIT_DBS=true \ 
   -e TEST_DATA=true \
@@ -62,7 +62,7 @@ Para corroborar la instalación se debe revisar el puerto 5000 del host por medi
 ### Creacion de usuario master
 Para la creación de un usuario master se deben tener instaladas y levantadas las instancias del ecosistema de CKAN previamente. Para corroborar la instalación y el estado de las instancias correr el siguiente comando que arrojará un listado de las instancias que estan corriendo actualmente en el host:
 ```sh
-  docker ps
+$ docker ps
 ```
 
 Despues ejecutar el siguiente comando para la creación del usuario administrador en base a la documentación de [CKAN](http://docs.ckan.org/en/latest/sysadmin-guide.html#creating-a-sysadmin-account).
