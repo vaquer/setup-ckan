@@ -16,6 +16,5 @@ if [ "$TEST_DATA" = true]; then
   $CKAN_HOME/bin/paster --plugin=ckan create-test-data -c /project/development.ini
 fi
 
-
 # Serve site
 exec apachectl -DFOREGROUND

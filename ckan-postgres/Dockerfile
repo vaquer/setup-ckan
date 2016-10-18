@@ -1,6 +1,4 @@
-# Build: docker build -t mxabierto/postgres:opi 
-# Usage: docker run --name postgres -e POSTGRES_USER=ckan -e POSTGRES_PASSWORD=super-secure-pass -d -P mxabierto/postgres
-
+# Build: docker build -t ckan/postgres
 # Base Image
 FROM postgres:9.3
 MAINTAINER 	Francisco Vaquero <francisco@opi.la>

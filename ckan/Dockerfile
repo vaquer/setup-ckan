@@ -1,14 +1,6 @@
-# mxabierto CKAN
-# Base ckan installation
-# Heavily based on datacats ( https://github.com/datacats/datacats )
-# Build:
-#   docker build -t mxabierto/ckan .
-# Usage:
-#   docker run --rm -itP mxabierto/ckan
-
-# Base image
+# Build: docker build -t ckan/ckan-base
 FROM ubuntu:14.04
-
+# Heavily based on datacats ( https://github.com/datacats/datacats )
 MAINTAINER bcessa <ben@pixative.com>
 
 # Configuration variables

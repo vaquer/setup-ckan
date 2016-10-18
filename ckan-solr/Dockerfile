@@ -1,10 +1,4 @@
-# mxabierto CKAN-Solr
-# Solr installation for CKAN usage
-# Build:
-#   docker build -t mxabierto/ckan-solr .
-# Usage:
-#   docker run --rm -it -p 8983:8983 mxabierto/ckan-solr
-
+# Build: docker build -t ckan/ckan-solr
 # Base image
 FROM ubuntu:10.04
 
