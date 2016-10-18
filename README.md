@@ -65,7 +65,7 @@ Para la creación de un usuario master se deben tener instaladas y levantadas la
   docker ps
 ```
 
-Despues ejecutar el siguiente comando para la creación del usuario administrador:
+Despues ejecutar el siguiente comando para la creación del usuario administrador en base a la documentación de [CKAN](http://docs.ckan.org/en/latest/sysadmin-guide.html#creating-a-sysadmin-account).
 ```sh
 $ docker exect -it ckan CKAN_HOME/bin/paster --plugin=ckan sysadmin add {{usuario}} -c  /project/development.ini
 ```
