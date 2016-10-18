@@ -67,7 +67,7 @@ $ docker ps
 
 Despues ejecutar el siguiente comando para la creación del usuario administrador en base a la documentación de [CKAN](http://docs.ckan.org/en/latest/sysadmin-guide.html#creating-a-sysadmin-account).
 ```sh
-$ docker exect -it ckan CKAN_HOME/bin/paster --plugin=ckan sysadmin add {{usuario}} -c  /project/development.ini
+$ docker exect -it ckan CKAN_HOME/bin/paster --plugin=ckan sysadmin add {{usuario}} -c /project/development.ini
 ```
 **Nota: Sustituir {{usuario}} por el nombre de usuario requerido**
 
