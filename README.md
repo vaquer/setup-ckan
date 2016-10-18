@@ -1,20 +1,35 @@
 # setup-ckan
 
-Scripts de instalación de CKAN v2.5.2 basadas en Docker.
+Setup-ckan es una serie de scripts basados en Docker pensados para instalar una versión limpia de CKAN 2.5.2 lista para usarse con un minimo de esfuerzo y conocimientos técnicos. 
+
+Los scripts sin extendibles, lo que permite al usuario mas experimentado y avanzado en conocimientos informaticos satisfacer necesidades mas complejas que una instalación convencional de CKAN no logre cubrir. 
+
 
 ### Requerimientos
-  - [Docker](https://www.docker.com/)
+  - [Docker](https://www.docker.com/).
+
+**Nota: Las siguientes instrucciones no pretenden instruir al usuario en el uso de tecnologias basadas en Docker. Para mas información sobre los requerimientos ir al sitio oficial que esta referenciado en cada elemento de los requerimientos**
 
 ### Instalacion
+
+Para usar setup-ckan en su ambiente es necesario seguir los siguientes pasos.
+
+**Nota: Los siguientes comandos de consola se basan en un sistema operativo Linux Debian Like. Pueden cambiar para otras distribuciones**
+
+1. Se clona el repositorio github.
+
 ```sh
   git clone git@github.com:opintel/setup-ckan.git
+```
+2. Se construyen las imagenes Docker
+```sh
   docker build -t ckan/postgres setup-ckan/ckan-postgres
   docker build -t ckan/ckan-solr setup-ckan/ckan-solr
   docker build -t ckan/ckan-base setup-ckan/ckan-base
   docker build -t ckan/ckan-plugins setup-ckan/ckan-plugins
 ```
 ### Uso
-Se deben correr los siguientes comandos en consola
+Finalmente para levantar el ecosistema de CKAN es necesario correr los siguientes comandos.
 
 ```sh
 # Postgres
@@ -41,3 +56,5 @@ docker run \
   --link postgres-ckan:postgres \
   -d -p 5000:5000 ckan/ckan-plugin
 ```
+
+Para corroborar la instalación se debe revisar el puerto 5000 del host por medio del navegador.
