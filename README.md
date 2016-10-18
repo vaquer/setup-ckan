@@ -58,3 +58,17 @@ docker run \
 ```
 
 Para corroborar la instalación se debe revisar el puerto 5000 del host por medio del navegador.
+
+### Creacion de usuario master
+Para la creación de un usuario master se deben tener instaladas y levantadas las instancias del ecosistema de CKAN previamente. Para corroborar la instalación y el estado de las instancias correr el siguiente comando que arrojará un listado de las instancias que estan corriendo actualmente en el host:
+```sh
+  docker ps
+```
+
+Despues ejecutar el siguiente comando para la creación del usuario administrador:
+```sh
+$ docker exect -it ckan CKAN_HOME/bin/paster --plugin=ckan sysadmin add {{usuario}} -c  /project/development.ini
+```
+**Nota: Sustituir {{usuario}} por el nombre de usuario requerido**
+
+Una vez que se ejecuta el comando el sistema pedira por medio de preguntas los datos del nuevo administrador que deberan ser proporcionados para su creación.
