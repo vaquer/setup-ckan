@@ -1,0 +1,25 @@
+# Defaults for jetty see /etc/init.d/jetty for more
+
+# change to 0 to allow Jetty to start
+NO_START=0
+
+# change to 'no' or uncomment to use the default setting in /etc/default/rcS
+VERBOSE=yes
+
+# Run Jetty as this user ID (default: jetty)
+# Set this to an empty string to prevent Jetty from starting automatically
+JETTY_USER=root
+
+# Listen to connections from this network host
+# Use 0.0.0.0 as host to accept all connections.
+# Uncomment to restrict access to localhost
+JETTY_HOST=0.0.0.0
+
+# The network port used by Jetty
+JETTY_PORT=8983
+
+# Timeout in seconds for the shutdown of all webapps
+#JETTY_SHUTDOWN=30
+
+#JAVA_OPTIONS="-Dsolr.solr.home=/opt/solr/solr $JAVA_OPTIONS"
+JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/
