@@ -44,7 +44,7 @@ $ docker run --name postgres-ckan \
 # Solr
 $ docker run \
   --name ckan-solr \
-  -d -p 8983:8983 ckan/ckan-solr
+  -d -p 8080:8080 ckan/ckan-solr
 
 # CKAN
 $ docker run \
@@ -54,7 +54,7 @@ $ docker run \
   -e CKAN_SITE_URL=http://localhost/ \ 
   --link ckan-solr:solr \
   --link postgres-ckan:postgres \
-  -d -p 5000:5000 ckan/ckan-plugin
+  -d -p 5000:5000 ckan/ckan-plugins
 ```
 
 Para corroborar la instalación se debe revisar el puerto 5000 del host por medio del navegador.
@@ -67,7 +67,7 @@ $ docker ps
 
 Despues ejecutar el siguiente comando para la creación del usuario administrador en base a la documentación de [CKAN](http://docs.ckan.org/en/latest/sysadmin-guide.html#creating-a-sysadmin-account).
 ```sh
-$ docker exect -it ckan CKAN_HOME/bin/paster --plugin=ckan sysadmin add {{usuario}} -c /project/development.ini
+$ docker exec -it ckan /usr/lib/ckan/bin/paster --plugin=ckan sysadmin add {{usuario}} -c /project/development.ini
 ```
 **Nota: Sustituir {{usuario}} por el nombre de usuario requerido**
 
