@@ -14,11 +14,13 @@ RUN \
   $CKAN_HOME/bin/pip install -e git+https://github.com/okfn/ckanext-disqus#egg=ckanext-disqus
 
 # Create storage volumen folder 
-RUN mkdir -p /var/lib/ckan/storage
+RUN mkdir -p /var/lib/ckan/storage/uploads/group
+RUN mkdir -p /var/lib/ckan/resources/
 
 # Add my configuration file
 ADD develop.ini /project/development.ini
 ADD start.sh /start.sh
+
 
 # Replace apache config for base url  /busca
 ADD ckan_default.conf /etc/apache2/sites-available/ckan_default.conf
