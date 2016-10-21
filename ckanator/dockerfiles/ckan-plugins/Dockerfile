@@ -17,7 +17,7 @@ RUN \
 RUN mkdir -p /var/lib/ckan/storage/uploads/group
 RUN mkdir -p /var/lib/ckan/resources/
 
-# Add my configuration file
+# Add configuration file
 ADD develop.ini /project/development.ini
 ADD start.sh /start.sh
 

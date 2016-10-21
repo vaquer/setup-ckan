@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: ckanator
+Version: 0.0.1
+Summary: CLI Tool based in python to install a CKAN instance
+Home-page: https://github.com/opintel/setup-ckan
+Author: Francisco Vaquero
+Author-email: francisco@opi.la
+License: UNKNOWN
+Description: UNKNOWN
+Keywords: ckan,cli
+Platform: UNKNOWN
