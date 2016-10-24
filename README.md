@@ -6,6 +6,7 @@ Los scripts sin extendibles, lo que permite al usuario mas experimentado y avanz
 
 
 ### Requerimientos
+  - [Python](https://www.python.org/).
   - [Docker](https://www.docker.com/).
 
 **Nota: Las siguientes instrucciones no pretenden instruir al usuario en el uso de tecnologias basadas en Docker. Para mas información sobre los requerimientos ir al sitio oficial que esta referenciado en cada elemento de los requerimientos**
@@ -21,54 +22,25 @@ Para usar setup-ckan en su ambiente es necesario seguir los siguientes pasos.
 ```sh
 $ git clone git@github.com:opintel/setup-ckan.git
 ```
-2. Se construyen las imagenes Docker
+2. Se instala la aplicación
 ```sh
-$ docker build -t ckan/postgres setup-ckan/ckan-postgres
-$ docker build -t ckan/ckan-solr setup-ckan/ckan-solr
-$ docker build -t ckan/ckan-base setup-ckan/ckan-base
-$ docker build -t ckan/ckan-plugins setup-ckan/ckan-plugins
+$ python setup-ckan/setup.py develop
 ```
 ### Uso
 Finalmente para levantar el ecosistema de CKAN es necesario correr los siguientes comandos.
 
 ```sh
-# Postgres
-$ docker run --name postgres-ckan \         
-  -e POSTGRES_DB=ckan_default \                               
-  -e USER_DATASTORE=ckan \                                                                 
-  -e DATABASE_DATASTORE=datastore_default \
-  -e POSTGRES_USER=ckan \
-  -e POSTGRES_PASSWORD=super-secure-pass \
-  -d -P ckan/postgres
-
-# Solr
-$ docker run \
-  --name ckan-solr \
-  -d -p 8080:8080 ckan/ckan-solr
-
-# CKAN
-$ docker run \
-  --name ckan \
-  -e INIT_DBS=true \ 
-  -e TEST_DATA=true \
-  -e CKAN_SITE_URL=http://localhost/ \ 
-  --link ckan-solr:solr \
-  --link postgres-ckan:postgres \
-  -d -p 5000:5000 ckan/ckan-plugins
+$ ckanator createneighborhood
+$ ckanator runserver --port=<puerto> --postgrespass=<postgrespass> --siteurl=<host>
 ```
 
-Para corroborar la instalación se debe revisar el puerto 5000 del host por medio del navegador.
+Para corroborar la instalación se debe revisar el puerto y host por medio del navegador.
 
 ### Creacion de usuario master
 Para la creación de un usuario master se deben tener instaladas y levantadas las instancias del ecosistema de CKAN previamente. Para corroborar la instalación y el estado de las instancias correr el siguiente comando que arrojará un listado de las instancias que estan corriendo actualmente en el host:
-```sh
-$ docker ps
-```
 
-Despues ejecutar el siguiente comando para la creación del usuario administrador en base a la documentación de [CKAN](http://docs.ckan.org/en/latest/sysadmin-guide.html#creating-a-sysadmin-account).
 ```sh
-$ docker exec -it ckan /usr/lib/ckan/bin/paster --plugin=ckan sysadmin add {{usuario}} -c /project/development.ini
+$ ckanator create admin --username=<username> --password=<password>
 ```
-**Nota: Sustituir {{usuario}} por el nombre de usuario requerido**
 
 Una vez que se ejecuta el comando el sistema pedira por medio de preguntas los datos del nuevo administrador que deberan ser proporcionados para su creación.

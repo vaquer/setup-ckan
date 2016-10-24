@@ -4,7 +4,7 @@ ckanator
 
 Usage:
    ckanator createneighborhood
-   ckanator runserver [--port] (--admin --passadmin)
+   ckanator runserver [--port=<port>] (--postgrespass=<postgrespass> --siteurl=<siteurl>)
 """
 from inspect import getmembers, isclass
 from docopt import docopt

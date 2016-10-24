@@ -15,13 +15,16 @@ class CreageNeighborhood(ClinetDockerBase):
 
     def build(self, dockerfile_path):
         for line in self.client.build(dockerfile=dockerfile_path[1], rm=True, tag=dockerfile_path[0], path=dockerfile_path[2]):
-            response = json.loads(line.replace('\n', ''))
-            self.print_line_clean(response)
+            self.print_line_clean(line)
             self.responses.append(line)
 
     def print_line_clean(self, line):
         import re
+        import json
+
         r_unwanted = re.compile("[\n\t\r]")
+        line = json.loads(line.replace('\n', ''))
+
         if line.get('stream', ''):
             print colored.cyan(r_unwanted.sub("", line.get('stream', '')))
         elif line.get('error', ''):
