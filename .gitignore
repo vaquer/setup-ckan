@@ -1,1 +1,3 @@
 *.pyc
+ckanator.egg-info/*
+dist/*
