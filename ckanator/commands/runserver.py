@@ -1,64 +1,37 @@
-import docker
-import time
+import os
+import subprocess
 from clint.textui import colored
+from ckanator.settings import CURRENT_PATH
 from ckanator.dockerfiles.client import ClinetDockerBase
-from ckanator.settings import DOCKER_IMAGES_DETAILS
 
 
 class RunServer(ClinetDockerBase):
+    """
+    Clase que representa la accion de levantar
+    el SWARM con el ambiente de ckan por
+    medio del CLI Tool
+    """
     def run(self):
+        """
+        Metodo que ejecuta el script
+        que levanta el CKAN SWARM
+        """
         response = None
-        
-        self.load_options_settings()
+        site_url = self.options.get('--siteurl')
+        postgres_password = self.options.get('--postgrespass')
+        sh_script_path = os.path.join(CURRENT_PATH, 'dockerfiles/run-server.sh')
 
-        for image in DOCKER_IMAGES_DETAILS:
-            try:
-                if image[0] == 'ckan/ckan-plugins':
-                    host = self.client.create_host_config(read_only=False, links=image[4], port_bindings={5000: ('0.0.0.0', 5000)})
-                else:
-                    host = self.client.create_host_config(read_only=False, port_bindings=image[5])
-                container = self.client.create_container(image=image[0], name=image[1], environment=image[2], ports=image[3], host_config=host)
-            except docker.errors.APIError, e:
-                self.print_error(str(e))
-                return
+        if not site_url:
+            print colored.red("Debes definir una url base. Ejemplo: http://localhost")
+            return False
 
-            response = self.client.start(container=container.get('Id'))
-            self.print_output(response)
-            time.sleep(10)
+        if not postgres_password:
+            print colored.red("Debes definir una contraseña para la Base de Datos")
+            return False
 
-    def load_options_settings(self):
-        DOCKER_IMAGES_DETAILS[0][2]['POSTGRES_PASSWORD'] = self.options.get('postgrespass')
+        # Parametrizamos los datos ingresados por el usuario
+        os.environ.setdefault('SITE_CKAN_URL', site_url)
+        os.environ.setdefault('POSTGRES_CKAN_PASSWORD_CLI', postgres_password)
 
-        if self.options.get('port') is not None:
-            DOCKER_IMAGES_DETAILS[2][3] = [self.options.get('port')]
-
-        DOCKER_IMAGES_DETAILS[2][2]['CKAN_SITE_URL'] = self.options.get('siteurl', 'http://localhost/')
-        print DOCKER_IMAGES_DETAILS
-
-    def print_output(self, text):
-        import re
-        import json
-
-        if text is None:
-            return
-
-        r_unwanted = re.compile("[\n\t\r]")
-        response = json.loads(text.replace('\n', ''))
-
-        if line.get('stream', ''):
-            print colored.cyan(r_unwanted.sub("", line.get('stream', '')))
-        elif line.get('error', ''):
-            print colored.red(r_unwanted.sub("", line.get('error', '')))
-
-    def print_error(self, text):
-        import re
-        import json
-
-        if text is None:
-            return
-
-        r_unwanted = re.compile("[\n\t\r]")
-        #print text
-        #response = json.loads(text.replace('\n', ''))
-
-        print colored.red(r_unwanted.sub("", text))
+        # Se crea el SWARM
+        print subprocess.call(['bash', sh_script_path])

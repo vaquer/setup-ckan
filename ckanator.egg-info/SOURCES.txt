@@ -7,9 +7,7 @@ ckanator.egg-info/entry_points.txt
 ckanator.egg-info/requires.txt
 ckanator.egg-info/top_level.txt
 ckanator/dockerfiles/__init__.py
-ckanator/dockerfiles/__init__.pyc
 ckanator/dockerfiles/client.py
-ckanator/dockerfiles/client.pyc
 ckanator/dockerfiles/ckan/Dockerfile
 ckanator/dockerfiles/ckan/apache.wsgi
 ckanator/dockerfiles/ckan/ckan_default.conf

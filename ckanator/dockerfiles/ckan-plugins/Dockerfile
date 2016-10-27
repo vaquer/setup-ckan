@@ -14,8 +14,11 @@ RUN \
   $CKAN_HOME/bin/pip install -e git+https://github.com/okfn/ckanext-disqus#egg=ckanext-disqus
 
 # Create storage volumen folder 
-RUN mkdir -p /var/lib/ckan/storage/uploads/group
-RUN mkdir -p /var/lib/ckan/resources/
+RUN mkdir -p /var/lib/ckan/storage/uploads/group && \
+	find /var/lib/ckan/storage -type d -exec chmod 777 {} \;
+
+RUN mkdir -p /var/lib/ckan/resources/ && \
+	find /var/lib/ckan/resources -type d -exec chmod 777 {} \;
 
 # Add configuration file
 ADD develop.ini /project/development.ini
