@@ -8,6 +8,8 @@ ckanator.egg-info/requires.txt
 ckanator.egg-info/top_level.txt
 ckanator/dockerfiles/__init__.py
 ckanator/dockerfiles/client.py
+ckanator/dockerfiles/run-server-die-hard.sh
+ckanator/dockerfiles/run-server.sh
 ckanator/dockerfiles/ckan/Dockerfile
 ckanator/dockerfiles/ckan/apache.wsgi
 ckanator/dockerfiles/ckan/ckan_default.conf
@@ -28,3 +30,5 @@ ckanator/dockerfiles/ckan-solr/Dockerfile
 ckanator/dockerfiles/ckan-solr/jetty
 ckanator/dockerfiles/ckan-solr/schema.xml
 ckanator/dockerfiles/ckan-solr/start.sh
+ckanator/dockerfiles/interlock/Dockerfile
+ckanator/dockerfiles/interlock/config.toml
