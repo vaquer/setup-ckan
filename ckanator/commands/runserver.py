@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
 import os
+import re
 import subprocess
+#from subprocess import Popen, PIPE, TimeoutExpired
 from clint.textui import colored
 from ckanator.settings import CURRENT_PATH
 from ckanator.dockerfiles.client import ClinetDockerBase
@@ -7,31 +10,71 @@ from ckanator.dockerfiles.client import ClinetDockerBase
 
 class RunServer(ClinetDockerBase):
     """
-    Clase que representa la accion de levantar
-    el SWARM con el ambiente de ckan por
-    medio del CLI Tool
+    Clase: Comando que levanta un SWARM Docker
+    con el ambiente necesario para correr una
+    instancia funcional de CKAN 
     """
     def run(self):
         """
-        Metodo que ejecuta el script
-        que levanta el CKAN SWARM
+        Funcion que ejecuta un script bash
+        para levantar SWARM que corre
+        la instalacion de CKAN con
+        sus servicios. Regresa True si todo es correcto
+        False si algo falla en el proceso
+
+        Return: Boolean
         """
-        response = None
-        site_url = self.options.get('--siteurl')
-        postgres_password = self.options.get('--postgrespass')
+        
+        # Obtencion de los parametros
+        site_url = self.options.get('--siteurl', None)
+        postgres_password = self.options.get('--postgrespass', None)
         sh_script_path = os.path.join(CURRENT_PATH, 'dockerfiles/run-server.sh')
 
+        # Validacion de los parametros
         if not site_url:
-            print colored.red("Debes definir una url base. Ejemplo: http://localhost")
+            self.errors = colored.red("Debes definir una url base. Ejemplo: http://localhost")
             return False
 
         if not postgres_password:
-            print colored.red("Debes definir una contraseña para la Base de Datos")
+            self.errors = colored.red("Debes definir una contraseña para la Base de Datos")
             return False
 
-        # Parametrizamos los datos ingresados por el usuario
+        # Parametrizacion de las opciones a var envs
         os.environ.setdefault('SITE_CKAN_URL', site_url)
         os.environ.setdefault('POSTGRES_CKAN_PASSWORD_CLI', postgres_password)
 
-        # Se crea el SWARM
-        print subprocess.call(['bash', sh_script_path])
+        # Creacion del SWARM
+        self.imprime_centrado('*')
+        self.imprime_centrado("Comenzando creacion del SWARM CKAN")
+        self.imprime_centrado('*')
+
+        stdout = subprocess.check_output(['bash', sh_script_path], stderr=subprocess.STDOUT)
+
+        # Borrado de variables de entorno
+        os.environ.setdefault('SITE_CKAN_URL', '')
+        os.environ.setdefault('POSTGRES_CKAN_PASSWORD_CLI', '')
+
+        if not self.process_is_ok(stdout):
+            return False
+
+        self.imprime_centrado('Se han levantado los servicios exitosamente')
+        return True
+
+    def process_is_ok(self, output):
+        """
+        Funcion: Verifica que la salida
+        del proceso de creacion del SWARM
+        sea correcta
+
+        if output in "Se han levantado los servicios exitosamente":
+            return True
+        elif output in "Ha ocurrido un error al levantar el SWARM":
+            return False
+        else:
+        """       
+        for line in output.split('\n'):
+            if 'Error response from daemon:' in line:
+                self.errors = line.split('Error response from daemon:')[1]
+                return False
+
+        return True

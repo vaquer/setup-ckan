@@ -1,3 +1,4 @@
+import os
 import docker
 
 
@@ -7,8 +8,20 @@ class ClinetDockerBase(object):
         self.args = args
         self.kwargs = kwargs
         self.client = docker.AutoVersionClient()
-        #Client(base_url='unix://var/run/docker.sock')
         self.responses = []
+        self.errors = None
+
+    def imprime_centrado(self, str):
+        """
+        Metodo: Imprime un mensaje centrado
+        en base al ancho actual de la shell
+        """
+        rows, columns = os.popen('stty size', 'r').read().split()
+        print str.center(int(columns), "*")
 
     def run(self):
+        """
+        Funcion: Logica del commando CLI
+        Return: Boolean
+        """
         raise NotImplementedError('You must implement the run() method yourself')

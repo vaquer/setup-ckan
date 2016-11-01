@@ -30,4 +30,5 @@ def main():
             command = [command[1] for command in commands if command[0] != 'ClinetDockerBase'][0]
             command = command(options=options)
             # Correr comando
-            command.run()
+            if command.run() is false:
+                print command.erros

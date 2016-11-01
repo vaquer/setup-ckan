@@ -13,19 +13,19 @@ class CreateAdmin(ClinetDockerBase):
         """
         Metodo que crea un administrador en la instancia de ckan
         """
-        password = '{0}'.format(self.options.get('--password'))
-        usuario = '{0}'.format(self.options.get('--username'))
+        password = self.options.get('--password', None)
+        usuario = self.options.get('--username', None)
 
         if not usuario:
-            print colored.red("Debes especificar un nombre de usuario para el administrador")
+            self.errors = colored.red("Debes especificar un nombre de usuario para el administrador")
             return False
 
         if not password:
-            print colored.red("Debes especificar el password del administrador")
+            self.errors = colored.red("Debes especificar el password del administrador")
             return False
 
         # Obtencion del contenedor CKAN
-        docker_container = subprocess.Popen('docker ps --filter ancestor=ckan/ckan-plugins:latest -q', shell=True, stdout=subprocess.PIPE).stdout.read()
+        docker_container = subprocess.Popen('docker ps --filter ancestor=ckan/ckan-plugins:latest -q', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
 
         try:
             # Rutina de interaccion con al prompt del script
@@ -37,9 +37,10 @@ class CreateAdmin(ClinetDockerBase):
             child.expect('(?i)Confirm password:')
             child.sendline(password)
         except:
-            print colored.red("Algo salio mal. Por favor vuelve a intentarlo")
-            print(child.after, child.before)
+            self.errors = colored.red("Algo salio mal. Por favor vuelve a intentarlo")
+            self.errors += '{0} \n {1}'.format(child.after, child.before)
             return False
 
         print colored.green("Se ha creado el usuario {0}".format(usuario))
+        return True
 
