@@ -47,7 +47,7 @@ class CreageNeighborhood(ClinetDockerBase):
                 # Imprimir la salida en pantalla
                 self._imprime_output_formateado(line)
                 # Guardado del log de la salida del proceso
-                self.responses.append(line)    
+                self.responses.append(line)
         except TypeError, e:
             self.errors = colored.red(str(e))
             return False
@@ -63,12 +63,24 @@ class CreageNeighborhood(ClinetDockerBase):
         import re
         import json
 
+        nl = None
         # Remueve caracteres no deseados
-        regex_no_deseados = re.compile("[\n\t\r]")
+        regex_indeseados = re.compile("[\n\t\r]")
+
+        line = line.replace('\n', '').replace('{}', '"None"')
         # Conversion a JSON para mejor manejo
-        line = json.loads(line.replace('\n', ''))
+        try:
+            line = json.loads(line)
+        except ValueError:
+            return False
 
         if line.get('stream', ''):
-            print colored.cyan(regex_no_deseados.sub("", line.get('stream', '')))
+            nl = colored.cyan(regex_indeseados.sub("", line.get('stream', '')))
+        if line.get('status', ''):
+            nl = colored.cyan(regex_indeseados.sub("", line.get('status', '')))
         elif line.get('error', ''):
-            print colored.red(regex_no_deseados.sub("", line.get('error', '')))
+            nl = colored.red(regex_indeseados.sub("", line.get('error', '')))
+        else:
+            return False
+
+        print nl
